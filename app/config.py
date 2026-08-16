@@ -5,10 +5,6 @@ class Settings(BaseSettings):
     GROQ_API_KEY: str
     GROQ_MODEL: str = "llama-3.1-8b-instant"
 
-    # Shared secret that only your own frontend server knows. Every request
-    # to the AI endpoints must include this in an X-Backend-Key header, so
-    # random internet traffic can't spend your Groq quota even if they find
-    # this server's URL.
     BACKEND_API_KEY: str
 
     CORS_ORIGINS: list[str] = [

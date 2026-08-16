@@ -40,6 +40,7 @@ def chat(
     messages: list[dict[str, Any]],
     temperature: float = 0.7,
     max_tokens: int = 800,
+    model: str | None = None,
 ) -> str:
     """
     Send messages to Groq and return the generated response.
@@ -49,7 +50,7 @@ def chat(
 
     try:
         response = client.chat.completions.create(
-            model=settings.GROQ_MODEL,
+            model=model or settings.GROQ_MODEL,
             messages=messages,
             temperature=temperature,
             max_tokens=max_tokens,
@@ -90,18 +91,22 @@ def chat_json(
     messages: list[dict[str, Any]],
     temperature: float = 0.4,
     max_tokens: int = 1200,
+    model: str | None = None,
 ) -> str:
     """
     Same as chat(), but forces Groq to return valid JSON syntax (JSON mode).
     The system/user prompt still has to describe the exact shape you want -
     this only guarantees the string parses as JSON, not which fields it has.
+
+    Pass `model` to override settings.GROQ_MODEL for this call — used for
+    vision requests, which need a vision-capable model.
     """
 
     client = get_client()
 
     try:
         response = client.chat.completions.create(
-            model=settings.GROQ_MODEL,
+            model=model or settings.GROQ_MODEL,
             messages=messages,
             temperature=temperature,
             max_tokens=max_tokens,
